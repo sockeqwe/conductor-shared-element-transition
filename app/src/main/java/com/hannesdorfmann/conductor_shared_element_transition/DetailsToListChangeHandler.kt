@@ -44,16 +44,7 @@ class DetailsToListChangeHandler(private var position: Int) : ControllerChangeHa
       this.listView = to as RecyclerView
       this.container = container
 
-      // Find the index listView add the listView view
-      for (i in 0..container.childCount - 1) {
-        if (container.getChildAt(i) == from) {
-          // Add the list view in the hierarchy after the details view,
-          // so that both are in the container, but the details view is in the front and therefore
-          // the list view is not visible because hidden behind details view
-          container.addView(listView, i)
-          break
-        }
-      }
+      container.addView(listView)
 
     } else {
       // Not sure if this can ever be the case
