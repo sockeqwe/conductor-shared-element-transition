@@ -60,7 +60,11 @@ class ListAdapter(val inflater: LayoutInflater, val clickListener: (position: In
     override fun onPreDraw(): Boolean {
       viewHolder.itemView.viewTreeObserver.removeOnPreDrawListener(this)
       viewHolderPredrawedListener?.invoke(position, viewHolder)
-      return true
+
+      // Returning false, so the view is not drawn the first time it is added to the view hierachy
+      // This avoids flickering, because upon adding it to the view hierachy the android framework tries to draw it
+      // Just setting the Visibility to INVISIBLE doesnt' work
+      return false
     }
   }
 }

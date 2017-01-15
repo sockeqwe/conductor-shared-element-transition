@@ -44,16 +44,10 @@ class DetailsToListChangeHandler(private var position: Int) : ControllerChangeHa
       this.listView = to as RecyclerView
       this.container = container
 
-      // Find the index listView add the listView view
-      for (i in 0..container.childCount - 1) {
-        if (container.getChildAt(i) == from) {
-          // Add the list view in the hierarchy after the details view,
-          // so that both are in the container, but the details view is in the front and therefore
-          // the list view is not visible because hidden behind details view
-          container.addView(listView, i)
-          break
-        }
-      }
+      // Adding the listView to the view hierarchy, to start the view life cycle
+      // and waiting for the listView to lay out it's children
+      // Note: The installed onPreDrawListener (see ListAdapter.kt) will prevent the view from showing up for one frame
+      container.addView(listView)
 
     } else {
       // Not sure if this can ever be the case
@@ -93,8 +87,9 @@ class DetailsToListChangeHandler(private var position: Int) : ControllerChangeHa
       }
     })
 
-    //viewHolder.itemView.visibility = View.GONE
+    // The target view of the shared element is laid out, so we are now ready to start the transition
     listView?.removeView(viewHolder.itemView)
+
     TransitionManager.beginDelayedTransition(container, t)
     container?.removeView(detailsView)
     listView?.addView(viewHolder.itemView)
