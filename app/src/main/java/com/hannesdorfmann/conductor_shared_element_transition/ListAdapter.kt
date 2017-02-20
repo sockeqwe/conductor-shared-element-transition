@@ -60,7 +60,7 @@ class ListAdapter(val inflater: LayoutInflater, val clickListener: (position: In
     override fun onPreDraw(): Boolean {
       viewHolder.itemView.viewTreeObserver.removeOnPreDrawListener(this)
       viewHolderPredrawedListener?.invoke(position, viewHolder)
-      return true
+      return false
     }
   }
 }
